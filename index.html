@@ -14,6 +14,7 @@
         :root {
             --color-main: #091a2d;
             --color-accent: #f97316;
+            --color-accent-hover: #ea580c;
             --color-accent-blue: #0284c7;
             --color-accent-red: #dc2626;
             --color-bg: #f8fafc;
@@ -29,6 +30,12 @@
             color: var(--color-text);
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* すべてのリンクの下線を完全に消去 */
+        a {
+            text-decoration: none !important;
+            color: inherit;
         }
 
         /* Navigation */
@@ -87,13 +94,54 @@
             font-size: 2.2rem;
             font-weight: 700;
             line-height: 1.4;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .hero-lead {
             font-size: 1.1rem;
             color: #cbd5e1;
             max-width: 700px;
             margin: 0 auto;
+            margin-bottom: 35px;
+        }
+
+        /* ダウンロードボタンのアップグレードデザイン */
+        .download-btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+            color: var(--color-white) !important;
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 16px 36px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.35);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.5);
+            filter: brightness(1.05);
+        }
+        .download-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
+        }
+        .download-btn-icon {
+            font-size: 1.2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-4px); }
+            60% { transform: translateY(-2px); }
         }
 
         /* Main Layout */
@@ -358,6 +406,25 @@
             pointer-events: auto;
         }
 
+        /* Card Link Component Styles */
+        .custom-card-link-v5 {
+            display: block;
+            margin: 40px 0;
+        }
+        .custom-card-v5 {
+            background-color: var(--color-white);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .custom-card-link-v5:hover .custom-card-v5 {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -5px rgba(9, 26, 45, 0.15), 0 4px 6px -2px rgba(9, 26, 45, 0.05);
+            border-color: var(--color-accent);
+        }
+
         /* Responsive Design */
         @media (max-width: 1024px) {
             .grid-2col {
@@ -375,7 +442,18 @@
             .bubble {
                 max-width: 90%;
             }
-            padding: 30px 15px;
+            .download-btn {
+                padding: 14px 28px;
+                font-size: 0.95rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .card-meta-v5 .badge-new-v5 {
+                margin-left: 0 !important;
+                width: 100%;
+                text-align: center;
+                margin-top: 4px;
+            }
         }
     </style>
 </head>
@@ -396,10 +474,13 @@
             </div>
             <h1 class="hero-title">🎬 未来を写す「真空カメラ」の秘密と仕様表の罠</h1>
             <p class="hero-lead">ただ者ではない鋭い中学生と、光学のプロによる熱いロジカル・ディスカッション。カタログの数値の裏に隠されたセンサーの真実とは？</p>
-
-             <a href="tuc.pdf" download class="btn-action btn-pdf-download">
-                    <i class="fas fa-file-pdf"></i> 解説資料 (tuc.pdf) をダウンロードする
             
+            <div class="download-btn-container">
+                <a href="tuc.pdf" download class="download-btn">
+                    <span class="download-btn-icon">📥</span>
+                    <span>解説資料 (tuc.pdf) をダウンロードする</span>
+                </a>
+            </div>
         </div>
     </header>
 
@@ -420,7 +501,7 @@
                         <div class="avatar">👨‍💻</div>
                         <div class="bubble">
                             <span class="speaker-name">サトウ（開発エンジニア）</span>
-                            お、いいところに目をつけたね！これは君が普段使っているスマホやデジカメとは違って、大きな実験装置や工場のマシーンの中に部品として組み込んで使う<strong>『OEMカメラ（産業用・研究用カメラ）』</strong>というプロ仕様の機材なんだ。日本では『クロニクス株式会社』という会社が窓口になって販売しているよ。
+                            お、いいところに目をつけたね！これは君が普段使っているスマホやデジカメとは違って、大きな実験装置や工場のマシーンの中に部品として組み込んで使う<strong>『OEMカメラ（産業用・研究用カメラ）』</strong>というプロ仕様の機材んだ。日本では『クロニクス株式会社』という会社が窓口になって販売しているよ。
                         </div>
                     </div>
                     <div class="dialogue-row student">
@@ -443,7 +524,7 @@
                     <div class="img-container">
                         <img src="tuc.png" alt="OEMカメラがマシーンの中に組み込まれている様子と産業用途解説" class="zoomable-image">
                     </div>
-                    <p>※クリックで拡大表示が可能です。顕微鏡・半導体検査・天体観測など、微細・高速・超高感度が求められる各種プロフェッショナル領域において、専用の光学フレームワークにアライメントされて運用されます。</p>
+                    <p>顕微鏡・半導体検査・天体観測など、微細・高速・超高感度が求められる各種プロフェッショナル領域において、専用の光学フレームワークにアライメントされて運用されます。</p>
                 </div>
             </div>
         </section>
@@ -538,7 +619,7 @@
                         <div class="avatar">👦</div>
                         <div class="bubble">
                             <span class="speaker-name">アカリ（中学生）</span>
-                            なるほど、空気が邪魔なんだね。じゃあ『結露』は？
+                            なるほど、空気が邪魔んだね。じゃあ『結露』は？
                         </div>
                     </div>
                     <div class="dialogue-row engineer">
@@ -561,7 +642,7 @@
                             <span class="speaker-name">サトウ（開発エンジニア）</span>
                             そこでタクセンは、用途に合わせて<strong>『2つの合体スタイル』</strong>を用意して、その難題をクリアしているんだ！
                             <ul class="tech-list">
-                                <li><strong>① インバキューム（真空内設置）スタイル</strong> (主な型番：Dhyana XV95 / Dhyana XV400BSI)<br>特徴：カメラ本体を丸ごと真空の箱（チェンバー）の中に入れちゃう！<br>利点：空気がないから、ホースで冷たい水を循環させて冷やす（水冷）。データは細くて頑丈な『光ファイバー』で外へ送るよ。<strong>$10^{-6}\text{ Pa}$</strong> という超・真空の環境に、カメラをそのままポンと置くだけで完璧に動くから、研究者が自分でケースを自作しなくてよくて凄くラクなんだ。</li>
+                                <li><strong>① インバキューム（真空内設置）スタイル</strong> (主な型番：Dhyana XV95 / Dhyana XV400BSI)<br>特徴：カメラ本体を丸ごと真空の箱（チェンバー）の中に入れちゃう！<br>利点：空気がないから、ホースで冷たい水を循環させて冷やす（水冷）。データは細くて頑丈な『光ファイバー』で外へ送るよ。<strong>$10^{-6}\text{ Pa}$</strong> という超・真空の環境に、カメラをそのままポンと置くだけで完璧に動くから、研究者が自分でケースを自作しなくてよくて凄くラクんだ。</li>
                                 <li><strong>② オープンフロント（フランジ接続）スタイル</strong> (主な型番：Dhyana XF95 / Dhyana XF400BSI)<br>特徴：センサー（目）だけを真空の箱に向けて、本体はお外（大気中）に出しておく！<br>利点：本体がお外にあるから部屋の空気で普通に冷やせる（空冷）し、普通のUSBコードでそのままパソコンにつなげて配線が楽！しかもネジ（フランジ）で装置とガッチリ合体するから、お部屋の空気を完全にシャットアウトして、<strong>$10^{-7}\text{ Pa}$</strong> という、さらに空気の少ない異次元のきれいな真空（超高真空）をキープできるのが最大のメリットさ！</li>
                             </ul>
                         </div>
@@ -627,7 +708,7 @@
                         <div class="avatar">👨‍💻</div>
                         <div class="bubble">
                             <span class="speaker-name">サトウ（開発エンジニア）</span>
-                            普通の光（可視光）ならね。でも、さっき言った『軟X線』や『EUV』みたいな強すぎる光（波長が 1nm 〜 100nm くらいの超・短い領域）が来ると、なんと<strong>そのコーティング自体が邪魔になって、光をブロックしちゃう</strong>んだ！ だから青線は、光のエネルギーが強くなる（グラフの左側に行く）につれて、コーティングに光を吸い取られて、感度がゼロに向かって急降下しちゃうだろ？
+                            普通の光（可視光）ならね。でも、さっき言った『軟X線』や『EUV』みたいな強すぎる光（波長が 1nm 〜 100nm くらいの超・短い領域）が来ると、なんと<strong>そのコーティング自体が邪魔になって、光をブロックしちゃう</strong>んだ！ だから青線は、光のエネルギーが強くなる（グラフの左側に行く）につれて、コーティングに光を吸い取られて、感度が出ずに急降下しちゃうだろ？
                         </div>
                     </div>
                     <div class="dialogue-row student">
@@ -745,6 +826,27 @@
             </div>
         </section>
 
+        <a href="https://nakajimakan14550.github.io/chugaku_censor05/" class="custom-card-link-v5">
+            <div class="custom-card-v5">
+                <div class="card-meta-v5" style="display: flex; align-items: center; font-size: 0.8rem; color: var(--color-muted); flex-wrap: wrap; gap: 8px;">
+                    <span style="font-weight: bold; letter-spacing: 0.05em;">VOL.05 / VACUUM sCMOS SENSORS</span>
+                    <span style="color: var(--color-accent); font-weight: bold;">【過酷な限界環境に挑む！】</span>
+                    <span class="badge-new-v5" style="margin-left: auto; background-color: var(--color-accent); color: var(--color-white); font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px;">PICK UP 🚀</span>
+                </div>
+                
+                <h4 class="card-title-v5" style="margin-top: 12px; font-size: 1.25rem; color: var(--color-main); font-weight: 700;">教えてエンジニアさん！未来を写す「真空カメラ」の秘密と仕様表の罠</h4>
+                
+                <p class="card-text-v5" style="margin-top: 10px; font-size: 0.9rem; color: #475569; line-height: 1.6;">
+                    空기에当たると消えてしまう特殊な光「軟X線」や「EUV」を捉えるため、カメラごと宇宙と同じ『真空』に放り込む驚きのテクノロジーを大解剖！あえてお化粧を落とした「すっぴんセンサー（Non-ARC）」の逆転劇から、プロも驚くカタログ仕様表のトレードオフの罠までを中学生と完全解説！
+                </p>
+                
+                <div class="card-footer-v5" style="margin-top: 18px; padding-top: 12px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; color: var(--color-accent); font-weight: bold; font-size: 0.9rem;">
+                    <span>特設ページで授業をうける</span>
+                    <span style="font-size: 1rem;">▶</span>
+                </div>
+            </div>
+        </a>
+
     </main>
 
     <div class="zoom-overlay" id="zoomOverlay"></div>
@@ -764,10 +866,10 @@
                 if (img.classList.contains('zoomed')) {
                     closeZoom();
                 } else {
-                    closeZoom(); // Reset any existing zoomed image
+                    closeZoom();
                     img.classList.add('zoomed');
                     overlay.classList.add('active');
-                    document.body.style.overflow = 'hidden'; // Lock background scroll
+                    document.body.style.overflow = 'hidden';
                 }
             });
         });
