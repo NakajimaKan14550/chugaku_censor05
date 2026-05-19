@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教えてエンジニアさん！未来を写す「真空カメラ」の秘密と仕様表の罠</title>
+    <style>
+        /* Base Reset & Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --color-main: #091a2d;
+            --color-accent: #f97316;
+            --color-accent-blue: #0284c7;
+            --color-accent-red: #dc2626;
+            --color-bg: #f8fafc;
+            --color-text: #1e293b;
+            --color-muted: #64748b;
+            --color-white: #ffffff;
+            --max-width: 1200px;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: var(--color-main);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
+        .logo-link {
+            display: inline-block;
+        }
+        .logo-img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0f2b48 0%, var(--color-main) 100%);
+            color: var(--color-white);
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .hero-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .hero-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .hero-category {
+            background-color: var(--color-accent);
+            color: var(--color-white);
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+        .hero-lead {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Main Layout */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Section Styling */
+        section {
+            background-color: var(--color-white);
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+        }
+        
+        .section-title {
+            font-size: 1.6rem;
+            color: var(--color-main);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background-color: var(--color-accent);
+        }
+
+        /* Grid Layouts */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* Dialogue Box (Q&A Interface) */
+        .qa-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .dialogue-row {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .dialogue-row.student {
+            flex-direction: row;
+        }
+        .dialogue-row.engineer {
+            flex-direction: row-reverse;
+        }
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .dialogue-row.student .avatar {
+            background-color: #e0f2fe;
+        }
+        .dialogue-row.engineer .avatar {
+            background-color: #ffedd5;
+        }
+        .bubble {
+            max-width: 85%;
+            padding: 16px 20px;
+            border-radius: 12px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        .dialogue-row.student .bubble {
+            background-color: #f1f5f9;
+            color: var(--color-text);
+            border-top-left-radius: 2px;
+        }
+        .dialogue-row.engineer .bubble {
+            background-color: var(--color-main);
+            color: var(--color-white);
+            border-top-right-radius: 2px;
+        }
+        .bubble strong {
+            color: var(--color-accent);
+        }
+        .dialogue-row.student .bubble strong {
+            color: var(--color-main);
+        }
+        .speaker-name {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--color-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
+        .dialogue-row.engineer .speaker-name {
+            text-align: right;
+            color: #94a3b8;
+        }
+
+        /* Thought box inside dialogue */
+        .thought-quote {
+            background-color: rgba(249, 115, 22, 0.15);
+            border-left: 4px solid var(--color-accent);
+            padding: 15px;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            border-radius: 0 6px 6px 0;
+            color: var(--color-white);
+        }
+        .dialogue-row.student .thought-quote {
+            background-color: #ffffff;
+            border-left: 4px solid var(--color-main);
+            color: var(--color-text);
+        }
+
+        /* List styling inside engineering dialogue */
+        .tech-list {
+            list-style: none;
+            margin-top: 12px;
+            padding-left: 0;
+        }
+        .tech-list li {
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+        .tech-list li::before {
+            content: "■";
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--color-accent);
+            font-size: 0.75rem;
+        }
+
+        /* Tech Table Specifics */
+        .tech-table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .tech-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        .tech-table th, .tech-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .tech-table th {
+            background-color: var(--color-main);
+            color: var(--color-white);
+            font-weight: 600;
+        }
+        .tech-table tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+        .tech-table tr:hover td {
+            background-color: #f1f5f9;
+        }
+
+        /* Highlight markers */
+        .marker-red {
+            color: var(--color-accent-red);
+            font-weight: bold;
+        }
+        .marker-blue {
+            color: var(--color-accent-blue);
+            font-weight: bold;
+        }
+
+        /* Technical Side Panel */
+        .tech-panel {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-top: 4px solid var(--color-main);
+            padding: 25px;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .tech-panel h4 {
+            font-size: 1.1rem;
+            color: var(--color-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tech-panel p {
+            font-size: 0.85rem;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        /* Image Display Layout */
+        .img-container {
+            text-align: center;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .zoomable-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            cursor: zoom-in;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+        .zoomable-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+        
+        /* Zoom Overlay Class Controlled by JS */
+        .zoomable-image.zoomed {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 2000;
+            max-width: 95vw;
+            max-height: 95vh;
+            object-fit: contain;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            cursor: zoom-out;
+        }
+        .zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(9, 26, 45, 0.9);
+            z-index: 1999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .zoom-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.7rem;
+            }
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .bubble {
+                max-width: 90%;
+            }
+            padding: 30px 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="https://nakajimakan14550.github.io/home/" class="logo-link">
+                <img src="logo.png" alt="CHRONIX" class="logo-img">
+            </a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-container">
+            <div class="hero-brand">
+                <span class="hero-category">中学生×プロエンジニア特別対談</span>
+            </div>
+            <h1 class="hero-title">🎬 未来を写す「真空カメラ」の秘密と仕様表の罠</h1>
+            <p class="hero-lead">ただ者ではない鋭い中学生と、光学のプロによる熱いロジカル・ディスカッション。カタログの数値の裏に隠されたセンサーの真実とは？</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section id="act-1">
+            <h2 class="section-title">1幕：謎のカメラ「Tucsen（タクセン）」ってなぁに？</h2>
+            <div class="grid-2col">
+                <div class="qa-container">
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            ねえエンジニアさん、この<strong>『Tucsen（タクセン）』</strong>って書かれた英語の資料、何に使うカメラなの？ スマホのカメラじゃダメなの？
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            お、いいところに目をつけたね！これは君が普段使っているスマホやデジカメとは違って、大きな実験装置や工場のマシーンの中に部品として組み込んで使う<strong>『OEMカメラ（産業用・研究用カメラ）』</strong>というプロ仕様の機材なんだ。日本では『クロニクス株式会社』という会社が窓口になって販売しているよ。
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            部品としてのカメラ？ スマホのカメラじゃダメな理由って？
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            全然ダメ！例えば、スマホやパソコンの頭脳になる<strong>「半導体（ウェハ）」をものすごいスピードで検査</strong>したり、液晶画面（FPD）の傷をチェックしたりするからね。他にも、お医者さんが病気を見つけるための顕微鏡や、宇宙の星を観察する巨大な望遠鏡にも組み込まれるんだ。スマホのカメラじゃ、性能が違いすぎてお話にならないのさ。
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-panel">
+                    <h4>OEM産業用カメラの組み込みマシーン全体図</h4>
+                    <div class="img-container">
+                        <img src="tuc.png" alt="OEMカメラがマシーンの中に組み込まれている様子と産業用途解説" class="zoomable-image">
+                    </div>
+                    <p>※クリックで拡大表示が可能です。顕微鏡・半導体検査・天体観測など、微細・高速・超高感度が求められる各種プロフェッショナル領域において、専用の光学フレームワークにアライメントされて運用されます。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="act-2">
+            <h2 class="section-title">2幕：タクセンの「4つのカメラグループ」</h2>
+            <div class="grid-2col">
+                <div class="qa-container">
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            へぇー。カタログを見ると、たくさん種類があるみたいだけど、どう違うの？
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            いい質問だ！タクセンのカメラは、用途に合わせて大きく4つのグループに分かれているんだ。表にまとめたから見てごらん。
+                        </div>
+                    </div>
+
+                    <div class="tech-table-container">
+                        <table class="tech-table">
+                            <thead>
+                                <tr>
+                                    <th>グループ名</th>
+                                    <th>主な製品型番</th>
+                                    <th>特徴</th>
+                                    <th>どんな用途（使い道）に使うの？</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>① sCMOSカメラ<br>（標準モデル）</strong></td>
+                                    <td>Dhyana 400D など</td>
+                                    <td>画質とスピードのバランスが良い！</td>
+                                    <td>工場での超ハイスピードな部品検査や、一般的な科学実験の録画。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>② 裏面照射型（BSI）<br>sCMOSカメラ</strong></td>
+                                    <td>Dhyana 400BSI V3、<br>Dhyana 95 V2 など</td>
+                                    <td>暗闇のわずかな光もクッキリ写す！<br>（裏面照射魔法の構造）</td>
+                                    <td>生物の細胞を分子レベルで観察する「蛍光顕微鏡」など。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>③ 大画面sCMOSカメラ</strong></td>
+                                    <td>Dhyana 4040 V2、<br>Dhyana 6060 など</td>
+                                    <td>一度に広大な範囲をパシャリ！<br>（画素数がもの凄い）</td>
+                                    <td>広大な宇宙を撮影する「天体観測」や「スペースデブリ（宇宙ゴミ）の追跡」。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>④ 真空sCMOSカメラ</strong></td>
+                                    <td>Dhyana XV95、<br>Dhyana XF400BSI など</td>
+                                    <td>空気のない『真空』過酷環境専用！<br>（究極のハイエンド）</td>
+                                    <td>今回の主役！真空宇宙・高エネルギー実験用。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tech-panel">
+                    <h4>sCMOSカメラ4大マトリクス構成表</h4>
+                    <div class="img-container">
+                        <img src="tuc2.png" alt="sCMOSカメラ4つのグループの特徴と用途比較表図" class="zoomable-image">
+                    </div>
+                    <p>標準モデルから超高感度BSI、大画面、そして最上位の真空モデルまで、量子効率や受光面積、環境耐性に応じて最適なラインナップが物理・化学のフロントラインへ供給されています。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="act-3">
+            <h2 class="section-title">3幕：なぜわざわざ「真空」でカメラを使うの？ 2つの合体スタイル</h2>
+            <div class="grid-2col">
+                <div class="qa-container">
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            その4つ目の『真空カメラ』だけど、なんでわざわざ空気のない場所で撮影するの？
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            理由は大きく分けて2つ。<strong>『光の吸収』</strong>と<strong>『結露（けつろ）』</strong>を防ぐためさ。最先端の科学研究や半導体の工場で使う『軟X線（なんえっくすせん）』や『EUV（極端紫外線）』という特殊な光はね、なんと空気に当たると空気の粒に吸収されて消えちゃう性質があるんだ。だから、光源からカメラのセンサー（目）までの間を完全に真空にする必要がある。
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            なるほど、空気が邪魔なんだね。じゃあ『結露』は？
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            このカメラは、画面のザラザラしたノイズを極限まで減らすために、センサーをマイナス60℃までキンキンに冷やすんだ。もし空気がある部屋でそんなことをしたら、カメラのまわりに水滴が大量についてショートしちゃうだろ？空気のない真空なら水滴がつかないし、宇宙空間と同じで理想的な『断熱材』にもなってくれる。……ただね、空気がない場所だと、カメラの熱がこもるし、コードも通せないっていう難問があるんだ。
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            えっ、じゃあどうやって対策してるの？
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            そこでタクセンは、用途に合わせて<strong>『2つの合体スタイル』</strong>を用意して、その難題をクリアしているんだ！
+                            <ul class="tech-list">
+                                <li><strong>① インバキューム（真空内設置）スタイル</strong> (主な型番：Dhyana XV95 / Dhyana XV400BSI)<br>特徴：カメラ本体を丸ごと真空の箱（チェンバー）の中に入れちゃう！<br>利点：空気がないから、ホースで冷たい水を循環させて冷やす（水冷）。データは細くて頑丈な『光ファイバー』で外へ送るよ。<strong>$10^{-6}\text{ Pa}$</strong> という超・真空の環境に、カメラをそのままポンと置くだけで完璧に動くから、研究者が自分でケースを自作しなくてよくて凄くラクなんだ。</li>
+                                <li><strong>② オープンフロント（フランジ接続）スタイル</strong> (主な型番：Dhyana XF95 / Dhyana XF400BSI)<br>特徴：センサー（目）だけを真空の箱に向けて、本体はお外（大気中）に出しておく！<br>利点：本体がお外にあるから部屋の空気で普通に冷やせる（空冷）し、普通のUSBコードでそのままパソコンにつなげて配線が楽！しかもネジ（フランジ）で装置とガッチリ合体するから、お部屋の空気を完全にシャットアウトして、<strong>$10^{-7}\text{ Pa}$</strong> という、さらに空気の少ない異次元のきれいな真空（超高真空）をキープできるのが最大のメリットさ！</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            なるほど！『カメラごと真空に放り込んで実験を早く始めるか』、『お外に本体を出して、究極の真空できれいな写真を撮るか』で選べるんだね！
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-panel">
+                    <h4>真空カメラの存在理由と2つの合体機構構造図</h4>
+                    <div class="img-container">
+                        <img src="tuc3.png" alt="真空カメラが必要な理由（光の吸収・結露）とインバキューム、オープンフロントの合体スタイル図解" class="zoomable-image">
+                    </div>
+                    <p>軟X線・EUV領域のフォトンの空気吸収（光子減衰）のメカニズム、冷却温度-60℃環境下での氷結（結露）防止ロジック、および気密圧フランジマウント構造を模式化した最先端研究用の構成図です。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="act-4">
+            <h2 class="section-title">4幕：激突！🔴 赤線（Non-ARC） vs 🔵 青線（Normal）の戦い</h2>
+            <div class="grid-2col">
+                <div class="qa-container">
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            じゃあ、追加の資料にあった、この『赤線（Non-ARC）』と『青線（Normal）』のグラフは何？ 赤線だけずっと一番上の『1.0（100%）』のところにいてチートみたいなんだけど……
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            ふふふ、そこへ目をつけたか！これはカメラの『感度（量子効率）』を表すグラフさ。実はここ、<span class="marker-red">🔴 赤線（すっぴん）</span> vs <span class="marker-blue">🔵 青線（お化粧）</span>の熱い戦いが繰り広げられているんだ！
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            すっぴんとお化粧の戦い？ どういうこと？
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            まず、普通のカメラである<span class="marker-blue">🔵 青線（Normalモデル）</span>のセンサーには、光が乱反射して写真が白っぽくならないように、<strong>『反射防止コーティング（ARC）』</strong>というお化粧が綺麗に塗られているんだ。
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            きれいに写すためのコーティングなら、あったほうがいいじゃん！ 青線の勝ちじゃないの？
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            普通の光（可視光）ならね。でも、さっき言った『軟X線』や『EUV』みたいな強すぎる光（波長が 1nm 〜 100nm くらいの超・短い領域）が来ると、なんと<strong>そのコーティング自体が邪魔になって、光をブロックしちゃう</strong>んだ！ だから青線は、光のエネルギーが強くなる（グラフの左側に行く）につれて、コーティングに光を吸い取られて、感度がゼロに向かって急降下しちゃうだろ？
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            あ、本当だ！ 左側に行くと青線はほぼ全滅してる！ じゃあ、ずっと1.0で耐えてる赤線は？
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            そこで立ち上がったのが<span class="marker-red">🔴 赤線（Non-ARCモデル）</span>さ！ 開発者が『特殊な光の邪魔になるなら、最初からそんなコーティング塗らなきゃいいじゃん！』って開き直って作った、あえての<strong>『すっぴん状態』</strong>のセンサーなんだよ。コーティングを取り除いたおかげで、どんなに強烈で特殊な光が来ても邪魔されず、光をダイレクトに100%キャッチできる。グラフの左側でも感度が全く落ちない、まさに<strong>『軟X線・EUV特化型のチートカメラ』</strong>に進化したんだ！
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            すごーい！ 普通なら『お化粧（コーティング）』があった方が綺麗に写るのに、最先端の科学の世界では『すっぴん（Non-ARC）』の方が圧倒的に強いなんて、面白い逆転劇だね！
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            その通り！ もしこれを自分たちで金属を削ってケースを作ろうとしたら、空気が漏れたり放熱できなくて何ヶ月も無駄にしちゃう。最初から完璧に動く『標準品』としてこれを提供しているから、Tucsenのカメラは世界中の研究所で引っ張りだこなのさ！
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-panel">
+                    <h4>4幕：激突！Non-ARC vs Normal の量子効率相関グラフ</h4>
+                    <div class="img-container">
+                        <img src="tuc4.png" alt="赤線（Non-ARCモデル）と青線（Normalモデル）の量子効率・感度比較波長グラフとコーティングの物理ブロック解説" class="zoomable-image">
+                    </div>
+                    <p>極端紫外線(EUV)および軟X線領域における光学透過率特性の反転現象です。反射防止膜(ARC)が短波長高エネルギー光線に対して遮蔽層として作用してしまう物理障壁を、ベアセンサ（すっぴん）化によりブレイクスルーしています。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="act-5">
+            <h2 class="section-title">5幕：プロ騒然！中学生が見抜いた「不都合な真実」</h2>
+            <div class="grid-2col">
+                <div class="qa-container">
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            うーん、なるほどね。でも、大画面モデルのページの仕様表をじっくり見ていて、<strong>ちょっと引っかかる不都合な真実を見つけちゃったんだけど……。</strong>
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            お、なんだい？ どんな初歩的な質問でも、このプロエンジニアおじさんがロジカルに教えてあげるよ！
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            4096×4096画素のカメラのことなんだけどさ。最新の裏面照射型（BSI）の『Dhyana 4040BSI』は、感度（Peak QE）が90%とハチャメチャに高いのに、光を貯められる量（Full Well Capacity）は <strong>39 ke-（3万9000電子）</strong>しかないよね。
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            う、うん……？（急に専門的な数値が出たな……？）
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            でも、あえて古い表面照射型（FSI）を採用している『Dhyana 4040 V2』を見ると、感度こそ74%に落ちるけど、光を貯められる量は <strong>70 ke-（7万電子）</strong>と倍近くあるじゃん。これってさ、いくら感度が高くても、太陽の観察とかスペースデブリ（宇宙ゴミ）の観測みたいに、<strong>『背景は真っ暗だけど対象がギラギラ光っているような、明暗差が激しくてすぐに画面が真っ白（白飛び）になっちゃう過酷な実験』</strong>をするなら、最新のBSIモデルよりも、あえてFSIのV2モデルを選んだほうが、ダイナミックレンジ（表現できる明るさの幅。V2モデルは <strong>86 dB</strong> もあるし！）を広く使えて有利になるケースが普通にあるんじゃない？
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            ……っ！?!
+                            <div class="thought-quote">
+                                💡 <strong>プロエンジニアの脳内（心の声）</strong><br>
+                                （し、しまっていったーーー！！！ 裏面照射型（BSI）は光を裏から受けるぶん感度が爆上がりする反面、画素内の電子を貯めるポケット（ポテンシャルウェル）が構造上狭くなって飽和しやすくなるっていう、CMOSセンサーの構造上の致命的なトレードオフに気づくだなんて……！<br>
+                                しかも、用途に合わせて『あえて旧世代のFSIを指名買いするほうが賢い』なんていう、僕たちプロの光学コンサルタントがドヤ顔で提案するレベルの話を、カタログの数値だけで見抜いてくるだと……！？ こいつ、ただの中学生じゃない……！！）
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dialogue-row student">
+                        <div class="avatar">👦</div>
+                        <div class="bubble">
+                            <span class="speaker-name">アカリ（中学生）</span>
+                            おじさん？急にフリーズしてどうしたの？私の言ったことが間違ってるなら、プロの言葉で論破してよ。
+                        </div>
+                    </div>
+                    <div class="dialogue-row engineer">
+                        <div class="avatar">👨‍💻</div>
+                        <div class="bubble">
+                            <span class="speaker-name">サトウ（開発エンジニア）</span>
+                            ……（図星すぎて、ぐうの音も出ない……！！）
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-panel">
+                    <h4>5幕：プロ騒然！BSIとFSIの構造トレードオフ物理モデル</h4>
+                    <div class="img-container">
+                        <img src="tuc5.png" alt="BSIモデルとFSIモデルのスペック比較（感度vs飽和電荷量容量）および太陽観察・スペースデブリ追跡におけるダイナミックレンジ選択の優位性解説" class="zoomable-image">
+                    </div>
+                    <p>裏面照射型（BSI）の高量子効率特性と、表面照射型（FSI）が持つ大きなポテンシャルウェル容量（飽和電荷量：Full Well Capacity）の物理的背反特性。高コントラスト（高ダイナミックレンジ）環境におけるFSIの優位性を見抜いた論理設計プロセスです。</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="zoom-overlay" id="zoomOverlay"></div>
+
+    <footer style="background: #091a2d; color: #fff; padding: 40px 20px; text-align: center; font-size: 0.85rem; border-top: 1px solid #1e293b;">
+        <p>© 2026 CHRONIX ‐ Tucsen sCMOS Technical Commentary Project.</p>
+    </footer>
+
+    <script>
+        // Image Zoom Logic
+        const images = document.querySelectorAll('.zoomable-image');
+        const overlay = document.getElementById('zoomOverlay');
+
+        images.forEach(img => {
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (img.classList.contains('zoomed')) {
+                    closeZoom();
+                } else {
+                    closeZoom(); // Reset any existing zoomed image
+                    img.classList.add('zoomed');
+                    overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Lock background scroll
+                }
+            });
+        });
+
+        overlay.addEventListener('click', closeZoom);
+        window.addEventListener('scroll', closeZoom);
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeZoom();
+        });
+
+        function closeZoom() {
+            images.forEach(img => img.classList.remove('zoomed'));
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    </script>
+</body>
+</html>
